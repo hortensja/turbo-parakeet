@@ -1,11 +1,4 @@
-# embedding_in_qt4.py --- Simple Qt4 application embedding matplotlib canvases
-#
-# Copyright (C) 2005 Florent Rougon
-#               2006 Darren Dale
-#
-# This file is an example program for matplotlib. It may be used and
-# modified with no restriction; raw copies as well as modified versions
-# may be distributed without limitation.
+# -*- coding: utf-8 -*-
 
 from __future__ import unicode_literals
 import sys
@@ -79,22 +72,37 @@ class ApplicationWindow(QtGui.QMainWindow):
     def __init__(self):
         QtGui.QMainWindow.__init__(self)
         self.setAttribute(QtCore.Qt.WA_DeleteOnClose)
-        self.setWindowTitle("application main window")
+        self.setWindowTitle("Modelling and simulating ED")
 
-        self.file_menu = QtGui.QMenu('&File', self)
-        self.file_menu.addAction('&Quit', self.fileQuit,
+        self.file_menu = QtGui.QMenu('&Plik', self)
+        self.file_menu.addAction('&Wyjście', self.fileQuit,
                                  QtCore.Qt.CTRL + QtCore.Qt.Key_Q)
-        self.menuBar().addMenu(self.file_menu)
 
-        self.help_menu = QtGui.QMenu('&Help', self)
+
+        self.model_menu = QtGui.QMenu('&Model', self)
+        self.sabr_menu = self.model_menu.addMenu('&SABR')
+        self.sabr_menu.addAction('&Deterministyczny', self.run_sabr_deterministic)
+        self.sabr_menu.addAction('&Stochastyczny', self.run_sabr_stochastic)
+        self.sabr_menu.addAction('&Edytuj parametry...')
+
+        self.sbbh_menu = self.model_menu.addMenu('&SB\u2081B\u2082H')
+        self.sbbh_menu.addAction('&Deterministyczny', self.run_sbbh_deterministic)
+        self.sbbh_menu.addAction('&Stochastyczny', self.run_sbbh_stochastic)
+        self.sbbh_menu.addAction('&Edytuj parametry...')
+
+        self.help_menu = QtGui.QMenu('&Pomoc', self)
+        self.help_menu.addAction('&O programie', self.about)
+
+        self.menuBar().addMenu(self.file_menu)
+        self.menuBar().addSeparator()
+        self.menuBar().addMenu(self.model_menu)
         self.menuBar().addSeparator()
         self.menuBar().addMenu(self.help_menu)
 
-        self.help_menu.addAction('&About', self.about)
 
         self.main_widget = QtGui.QWidget(self)
 
-        l = QtGui.QVBoxLayout(self.main_widget)
+        l = QtGui.QHBoxLayout(self.main_widget)
         sc = MyStaticMplCanvas(self.main_widget, width=5, height=4, dpi=100)
         dc = MyDynamicMplCanvas(self.main_widget, width=5, height=4, dpi=100)
         l.addWidget(sc)
@@ -103,7 +111,7 @@ class ApplicationWindow(QtGui.QMainWindow):
         self.main_widget.setFocus()
         self.setCentralWidget(self.main_widget)
 
-        self.statusBar().showMessage("All hail matplotlib!", 2000)
+        #self.statusBar().showMessage("Joanna Cichowska", 2016)
 
     def fileQuit(self):
         self.close()
@@ -113,21 +121,26 @@ class ApplicationWindow(QtGui.QMainWindow):
 
     def about(self):
         QtGui.QMessageBox.about(self, "About",
-                                """embedding_in_qt4.py example
-Copyright 2005 Florent Rougon, 2006 Darren Dale
-
-This program is a simple example of a Qt4 application embedding matplotlib
-canvases.
-
-It may be used and modified with no restriction; raw copies as well as
-modified versions may be distributed without limitation."""
+                                """Engineer thesis
+                                Joanna Cichowska 2016"""
                                 )
+    def run_sabr_deterministic(self):
+        print("SABR deterministic")
 
+    def run_sabr_stochastic(self):
+        print("SABR stochastic")
+
+
+    def run_sbbh_deterministic(self):
+        print("SBBH deterministic")
+
+    def run_sbbh_stochastic(self):
+        print("SBBH stochastic")
 
 qApp = QtGui.QApplication(sys.argv)
 
 aw = ApplicationWindow()
-aw.setWindowTitle("%s" % progname)
+#aw.setWindowTitle("%s" % progname)
 aw.show()
 sys.exit(qApp.exec_())
 #qApp.exec_()

@@ -3,11 +3,9 @@ from abc import ABCMeta, abstractmethod
 class IModel:
     __metaclass__ = ABCMeta
 
-    @abstractmethod
     def set_params(self, new_params):
         self.params = new_params
 
-    @abstractmethod
     def update_param(self, param_name, param):
         try:
             self.params[param_name]

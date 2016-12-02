@@ -8,15 +8,15 @@ class Model(IModel):
     def __init__(self, params = default_params):
         self.params = params
 
-    def set_params(self, new_params):
-        self.params = new_params
+    # def set_params(self, new_params):
+    #     self.params = new_params
 
-    def update_param(self, param_name, param):
-        try:
-            self.params[param_name]
-            self.params[param_name] = param
-        except KeyError:
-            print("Parameter doesn't exist")
+    # def update_param(self, param_name, param):
+    #     try:
+    #         self.params[param_name]
+    #         self.params[param_name] = param
+    #     except KeyError:
+    #         print("Parameter doesn't exist")
 
         # y = [s a b r]
 

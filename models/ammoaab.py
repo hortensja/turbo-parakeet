@@ -5,18 +5,8 @@ class Model(IModel):
     default_params = {'beta1': 0.4, 'beta2': 0.3, 'm1': 0, 'm2': 0, 'alpha': 0.05, 'gamma1': 0.05, 'gamma2': 0.2,
                       'mu': 0.05, 'nu': 0, 'xi': 0}
 
-    def __init__(self, params = default_params):
+    def __init__(self, params=default_params):
         self.params = params
-
-    # def set_params(self, new_params):
-    #     self.params = new_params
-
-    # def update_param(self, param_name, param):
-    #     try:
-    #         self.params[param_name]
-    #         self.params[param_name] = param
-    #     except KeyError:
-    #         print("Parameter doesn't exist")
 
         # y = [s a b r]
 
@@ -37,7 +27,10 @@ class Model(IModel):
         def drdt(y, t):
             return (p['xi'] * y[0] + p['gamma1'] * y[1] + p['gamma2'] * y[2] - (p['mu'] + p['nu']) * y[3])
 
-        return [dsdt(y,t), dadt(y,t), dbdt(y,t), drdt(y,t)]
+        return [dsdt(y, t), dadt(y, t), dbdt(y, t), drdt(y, t)]
 
     def get_legend(self):
         return ["S", "A", "B", "R"]
+
+    def get_title(self):
+        return 'SABR'

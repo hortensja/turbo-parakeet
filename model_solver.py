@@ -1,13 +1,13 @@
 import numpy as np
 from scipy.integrate import odeint
 
-import matplotlib.pyplot as mp
-
 from math_util import normalize_initial_conditions as nic, randomize_initial_conditions as ric
-from models.ammoaab import Model as sabr
-from models.aitfbaae import Model as sb1b2h
+from models.ammoaab import Model as Sabr
+from models.aitfbaae import Model as Sb1b2h
+from parameters import Parameters
 
-model_dict = {'SABR':sabr, 'SBBH':sb1b2h}
+model_dict = {'SABR': Sabr, 'SBBH': Sb1b2h}
+
 
 class ModelSolver:
 
@@ -42,16 +42,16 @@ class ModelSolver:
     def get_legend(self):
         return self.model.get_legend()
 
-if __name__ == "__main__":
+    def get_title(self):
+        return self.model.get_title()
 
-    model_solver = ModelSolver('SABR')
-    #print(model_solver.solve())
-    x, y = model_solver.solve()
-    #print(x)
-    plt = mp.plot(x, y, label='')
-    mp.legend(plt, model_solver.model.get_legend())
-    mp.show()
-    #
-    # print(model.get_legend())
+    def update_params(self, all_params):
+        globals = all_params.get_globals()
+        self.model.set_params(all_params.get_params())
+        self.set_delt(globals['delt'])
+        self.set_tmax(globals['tmax'])
+        self.set_init_conds(all_params.get_inits())
 
-
+    def get_params(self):
+        globals = {'delt': self.delt, 'tmax': self.tmax}
+        return Parameters(self.model.get_params(), globals, self.init_conds)

@@ -38,18 +38,12 @@ class PlotCanvas(FigureCanvas):
 class StaticPlotCanvas(PlotCanvas):
 
     def compute_initial_figure(self):
-        t = arange(0.0, 3.0, 0.01)
-        s = sin(2*pi*t)
-        c = cos(2*pi*t)
-        self.axes.plot(t, s, label='a')
-        self.axes.plot(t, c, label='f')
-        #legend(plt, ['a', 'b'])
-        #handles, labels = self.axes.get_legend_handles_labels()
-        self.axes.legend(['a', 'b'])
+        pass
 
-    def plot_model(self, x, y, legend):
+    def plot_model(self, x, y, legend, title):
         self.axes.plot(x, y)
         self.axes.legend(legend)
+        self.axes.set_title(title)
         self.draw()
 
 

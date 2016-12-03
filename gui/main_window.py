@@ -102,8 +102,9 @@ class ApplicationWindow(QtGui.QMainWindow):
             msg.exec_()
         else:
             p_e = ParamsEditor(self.model_solver.get_params())
-            all_params = p_e.get_all_params()
-            self.model_solver.update_params(all_params)
+            all_params, status = p_e.get_all_params()
+            if status is True:
+                self.model_solver.update_params(all_params)
 
 
     def run_sbbh_deterministic(self):

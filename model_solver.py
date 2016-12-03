@@ -50,8 +50,8 @@ class ModelSolver:
         self.model.set_params(all_params.get_params())
         self.set_delt(globals['delt'])
         self.set_tmax(globals['tmax'])
-        self.set_init_conds(all_params.get_inits())
+        self.set_init_conds(nic(all_params.get_inits()))
 
     def get_params(self):
         globals = {'delt': self.delt, 'tmax': self.tmax}
-        return Parameters(self.model.get_params(), globals, self.init_conds)
+        return Parameters(self.model.get_legend(), self.model.get_params(), globals, self.init_conds)

@@ -117,8 +117,6 @@ class ApplicationWindow(QtGui.QMainWindow):
                              name + self.model_solver.get_title())
 
     def edit_parameters(self):
-        # date, time, ok = ParamsEditor.get_all_params()
-        # print(date, time, ok)
         if self.model_solver is None:
             msg = QtGui.QMessageBox()
             msg.setText("Najpierw wybierz model")

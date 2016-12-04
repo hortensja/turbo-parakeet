@@ -20,27 +20,21 @@ class ParamsEditor(QDialog):
 
         self.setWindowTitle('Edytor parametr\u00f3w')
 
-        self.all_params = old_params.get_params(), old_params.get_globals(), old_params.get_inits()
+        self.all_params = [old_params.get_params(), old_params.get_globals(), old_params.get_inits()]
         self.names = old_params.get_inits_names()
 
         self.manage_layout()
         self.manage_paramboxes()
         self.manage_buttons()
 
-
         self.setVisible(True)
-        # nice widget for editing the date
-        self.datetime = QDateTimeEdit(self)
-        #self.datetime.setDateTime(QDateTime.currentDateTime())
-        #self.layout.addWidget(self.datetime)
-        #self.show()
-
-
-    def dateTime(self):
-        return self.datetime.dateTime()
 
     def randomize(self):
+#        self.all_params[0] = Parameters.randomize_params(self.all_params[0])
+#        self.update_paramboxes(self.all_params[0])
+#        self.show()
         print('randomization')
+
 
     def manage_layout(self):
         self.layout = QGridLayout(self)
@@ -67,36 +61,53 @@ class ParamsEditor(QDialog):
 
     def manage_paramboxes(self):
         self.sbox_list = {}
-        layouts = QVBoxLayout(), QVBoxLayout(), QVBoxLayout()
-        descr_layouts = QVBoxLayout(), QVBoxLayout(), QVBoxLayout()
+        self.layouts = [QVBoxLayout(), QVBoxLayout(), QVBoxLayout()]
+        self.descr_layouts = QVBoxLayout(), QVBoxLayout(), QVBoxLayout()
         for i in range(3):
             try:
                 for name, param in self.all_params[i].iteritems():
                     print(i, name, param)
-                    sbox = ParamBox(name, param)
-                    self.sbox_list[name] = sbox
-                    layouts[i].addWidget(sbox)
-                    descr_layouts[i].addWidget(QLabel(name))
+                    self.add_parambox(name, param, i)
             except AttributeError:
                 for j in range(len(self.names)):
                     name = self.names[j]
                     param = self.all_params[i][j]
                     print(j, name, self.all_params[i][j])
-                    sbox = ParamBox(name, self.all_params[i][j])
-                    self.sbox_list[name] = sbox
-                    layouts[i].addWidget(sbox)
-                    descr_layouts[i].addWidget(QLabel(name))
+                    self.add_parambox(name, param, i)
+            self.layout.addLayout(self.descr_layouts[i], 0, 2 * i)
+            self.layout.addLayout(self.layouts[i], 0, 2 * i + 1)
 
-            self.layout.addLayout(descr_layouts[i], 0, 2 * i)
-            self.layout.addLayout(layouts[i], 0, 2 * i + 1)
+    # def update_layout(self, index):
+    #     self.layouts[index] = QVBoxLayout()
+    #     try:
+    #         for name, param in self.all_params[index].iteritems():
+    #             print(index, name, param)
+    #             self.add_parambox(name, param, index)
+    #     except AttributeError:
+    #         for j in range(len(self.names)):
+    #             name = self.names[j]
+    #             param = self.all_params[index][j]
+    #             print(j, name, self.all_params[index][j])
+    #             self.add_parambox(name, param, index)
+
+    def add_parambox(self, name, param, layout_no):
+        sbox = ParamBox(name, param)
+        self.sbox_list[name] = sbox
+        self.layouts[layout_no].addWidget(sbox)
+        self.descr_layouts[layout_no].addWidget(QLabel(name))
+
+    def update_paramboxes(self, p_dict):
+        for name, p in p_dict:
+            self.sbox_list[name].update(p)
+
 
     def get_all_params(self, parent=None):
         p = Parameters(self.names, *self.all_params)
-        print(p)
+        #print(p)
         result = self.exec_()
         for name, sbox in self.sbox_list.iteritems():
-             p.update_one(name, sbox.get_value())
-             print(name, sbox.get_value())
+            p.update_one(name, sbox.get_value())
+            #print(name, sbox.get_value())
         p.update()
         return (p, result == QDialog.Accepted)
 

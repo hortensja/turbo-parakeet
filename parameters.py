@@ -1,7 +1,4 @@
-
-
-
-
+import random
 
 
 class Parameters():
@@ -52,4 +49,15 @@ class Parameters():
         self.all_dict[name] = param
 
     def __str__(self):
-        return str([str(p+' '+str(self.params[p])) for p in self.params])#, str(self.globals), str(self.inits)
+        ret = []
+        for i in range(len(self.get_inits_names())):
+            ret.append(str(self.inits_names[i]+': '+str(self.inits[i])))
+        return str(ret)#str([str(p+' '+str(self.params[p])) for p in self.params])#, str(self.globals), str(self.inits)
+
+    @staticmethod
+    def randomize_params(p_dict, p_min=0.0, p_max=1.0):
+        ret = {}
+        for name, p in p_dict.iteritems():
+            ret[name] = random.uniform(p_min, p_max)
+        print(ret)
+        return ret

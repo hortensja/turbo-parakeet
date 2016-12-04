@@ -15,7 +15,15 @@ class ModelSolver:
         self.model = model_dict[modelType]()
         self.delt = 0.01
         self.tmax = 10.0
-        self.randomize_init_conds()
+        self._init_conds = ric()
+
+    @property
+    def init_conds(self):
+        return self._init_conds
+
+    @init_conds.setter
+    def init_conds(self, conds):
+         self._init_conds = nic(conds)
 
     def set_delt(self, delt):
         self.delt = delt
@@ -23,19 +31,16 @@ class ModelSolver:
     def set_tmax(self, tmax):
         self.tmax = tmax
 
-    def set_init_conds(self, conds):
-         self.init_conds = nic(conds)
 
     def set_model(self, model):
         self.model = model
 
-    def randomize_init_conds(self):
-        self.init_conds = ric()
-        print(self.init_conds)
+    #def randomize_init_conds(self):
+     #   print(self.init_conds)
 
     def solve(self):
         t = np.arange(0, self.tmax, self.delt)
-        y = odeint(self.model.get_set_of_ode, self.init_conds, t)
+        y = odeint(self.model.get_set_of_ode, self._init_conds, t)
         x = np.linspace(0.0, self.tmax, len(y))
         return (x, y)
 
@@ -50,8 +55,10 @@ class ModelSolver:
         self.model.set_params(all_params.get_params())
         self.set_delt(globals['delt'])
         self.set_tmax(globals['tmax'])
-        self.set_init_conds(nic(all_params.get_inits()))
+        print('update_params in model_solver: ')
+        self.init_conds = nic(all_params.get_inits())
+        print(self.init_conds)
 
     def get_params(self):
         globals = {'delt': self.delt, 'tmax': self.tmax}
-        return Parameters(self.model.get_legend(), self.model.get_params(), globals, self.init_conds)
+        return Parameters(self.model.get_legend(), self.model.get_params(), globals, self._init_conds)

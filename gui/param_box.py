@@ -5,9 +5,9 @@ class ParamBox(QDoubleSpinBox):
 
     def __init__(self, name, value=0.0, parent=None):
         super(ParamBox, self).__init__(parent)
-        #QDoubleSpinBox.__init__(parent)
         self.setSingleStep(0.1)
-        self.setMaximum(10.0)
+        self.setMaximum(50.0)
+        self.setDecimals(3)
         self.setValue(value)
         self.name = name
 
@@ -17,3 +17,6 @@ class ParamBox(QDoubleSpinBox):
 
     def get_name(self):
         return self.name
+
+    def update(self, value):
+        self.value = value

@@ -40,7 +40,9 @@ class ApplicationWindow(QtGui.QMainWindow):
         dc = DynamicPlotCanvas(self.main_widget)#, width=8, height=8, dpi=100)
 
 
-        self.model_solver = ModelSolver('SABR')# None
+        self.model_solver = None #ModelSolver('SABR')
+        self.plot_title = None
+
 
         layout.addWidget(self.left, 0, 0, 2, 4)
         layout.addWidget(dc, 0, 4, 2, 4)
@@ -92,19 +94,6 @@ class ApplicationWindow(QtGui.QMainWindow):
     def run_sabr_stochastic(self):
         print("SABR stochastic")
 
-    def edit_parameters(self):
-        #date, time, ok = ParamsEditor.get_all_params()
-        #print(date, time, ok)
-        if self.model_solver is None:
-            msg = QtGui.QMessageBox()
-            msg.setText("Najpierw wybierz model")
-            msg.setWindowTitle("(!)")
-            msg.exec_()
-        else:
-            p_e = ParamsEditor(self.model_solver.get_params())
-            all_params, status = p_e.get_all_params()
-            if status is True:
-                self.model_solver.update_params(all_params)
 
 
     def run_sbbh_deterministic(self):
@@ -117,8 +106,31 @@ class ApplicationWindow(QtGui.QMainWindow):
 
     def run_deterministic(self, type):
         self.model_solver = ModelSolver(modelType=type)
+        self.plot_title = 'deterministyczny model '
+        self.refresh_plot()
+
+    def refresh_plot(self, name=None):
+        if name is None:
+            name = self.plot_title
         x, y = self.model_solver.solve()
-        self.left.plot_model(x, y, self.model_solver.get_legend(), 'deterministyczny model '+self.model_solver.get_title())
+        self.left.plot_model(x, y, self.model_solver.get_legend(),
+                             name + self.model_solver.get_title())
+
+    def edit_parameters(self):
+        # date, time, ok = ParamsEditor.get_all_params()
+        # print(date, time, ok)
+        if self.model_solver is None:
+            msg = QtGui.QMessageBox()
+            msg.setText("Najpierw wybierz model")
+            msg.setWindowTitle("(!)")
+            msg.exec_()
+        else:
+            p_e = ParamsEditor(self.model_solver.get_params())
+            all_params, status = p_e.get_all_params()
+            if status is True:
+                print(all_params)
+                self.model_solver.update_params(all_params)
+                self.refresh_plot()
 
 
 qApp = QtGui.QApplication(sys.argv)

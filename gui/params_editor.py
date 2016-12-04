@@ -80,6 +80,8 @@ class ParamsEditor(QDialog):
             except AttributeError:
                 for j in range(len(self.names)):
                     name = self.names[j]
+                    param = self.all_params[i][j]
+                    print(j, name, self.all_params[i][j])
                     sbox = ParamBox(name, self.all_params[i][j])
                     self.sbox_list[name] = sbox
                     layouts[i].addWidget(sbox)
@@ -89,9 +91,12 @@ class ParamsEditor(QDialog):
             self.layout.addLayout(layouts[i], 0, 2 * i + 1)
 
     def get_all_params(self, parent=None):
-        print(Parameters(self.names, *self.all_params))
+        p = Parameters(self.names, *self.all_params)
+        print(p)
         result = self.exec_()
         for name, sbox in self.sbox_list.iteritems():
-            print(name, sbox.get_value())
-        return (Parameters(self.names, *self.all_params), result == QDialog.Accepted)
+             p.update_one(name, sbox.get_value())
+             print(name, sbox.get_value())
+        p.update()
+        return (p, result == QDialog.Accepted)
 

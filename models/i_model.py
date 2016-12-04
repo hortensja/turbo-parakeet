@@ -5,6 +5,7 @@ class IModel:
 
     def set_params(self, new_params):
         for name, param in new_params.iteritems():
+            print(name, param)
             self.update_param(name, param)
 
     def update_param(self, param_name, param):

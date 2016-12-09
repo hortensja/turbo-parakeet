@@ -11,8 +11,8 @@ model_dict = {'SABR': Sabr, 'SBBH': Sb1b2h}
 
 class ModelSolver:
 
-    def __init__(self, modelType):
-        self.model = model_dict[modelType]()
+    def __init__(self, model_type):
+        self.model = model_dict[model_type]()
         self.delt = 0.01
         self.tmax = 10.0
         self._init_conds = ric()
@@ -52,9 +52,7 @@ class ModelSolver:
         self.model.set_params(all_params.get_params())
         self.set_delt(globals['delt'])
         self.set_tmax(globals['tmax'])
-        print('update_params in model_solver: ')
-        self.init_conds = nic(all_params.get_inits())
-        print(self.init_conds)
+        self._init_conds = nic(all_params.get_inits())
 
     def get_params(self):
         globals = {'delt': self.delt, 'tmax': self.tmax}

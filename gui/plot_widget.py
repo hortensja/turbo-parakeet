@@ -20,7 +20,6 @@ class PlotCanvas(FigureCanvas):
         self.axes = fig.add_subplot(111)
 
         self.axes.hold(False)
-        #self.compute_initial_figure()
 
         FigureCanvas.__init__(self, fig)
         self.setParent(parent)
@@ -31,14 +30,8 @@ class PlotCanvas(FigureCanvas):
         FigureCanvas.updateGeometry(self)
 
 
-    def compute_initial_figure(self):
-        pass
-
-
 class StaticPlotCanvas(PlotCanvas):
 
-    def compute_initial_figure(self):
-        pass
 
     def plot_model(self, x, y, legend, title):
         self.axes.plot(x, y)
@@ -46,24 +39,4 @@ class StaticPlotCanvas(PlotCanvas):
         self.axes.set_title(title)
         self.draw()
 
-
-
-class DynamicPlotCanvas(PlotCanvas):
-
-    def __init__(self, *args, **kwargs):
-        PlotCanvas.__init__(self, *args, **kwargs)
-        self.axes.hold(False)
-        timer = QtCore.QTimer(self)
-        timer.timeout.connect(self.update_figure)
-        timer.start(1000)
-
-    def compute_initial_figure(self):
-        self.axes.plot([0, 1, 2, 3], [1, 2, 0, 4], 'r')
-
-    def update_figure(self):
-        # Build a list of 4 random integers between 0 and 10 (both inclusive)
-        l = [random.randint(0, 10) for i in range(4)]
-
-        self.axes.plot([0, 1, 2, 3], l, 'r')
-        self.draw()
 

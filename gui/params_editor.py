@@ -24,8 +24,13 @@ class ParamsEditor(QDialog):
         self.names = old_params.get_inits_names()
 
         self.manage_layout()
+        self.sbox_list = {}
+        self.layouts = [QVBoxLayout(), QVBoxLayout(), QVBoxLayout()]
+        self.descr_layouts = QVBoxLayout(), QVBoxLayout(), QVBoxLayout()
         self.manage_paramboxes()
         self.manage_buttons()
+
+        self.comp = None
 
         self.setVisible(True)
 
@@ -54,18 +59,16 @@ class ParamsEditor(QDialog):
         buttons.addButton(button_randomize, QDialogButtonBox.ActionRole)
         buttons.addButton(button_cancel, QDialogButtonBox.RejectRole)
         buttons.addButton(button_replace, QDialogButtonBox.AcceptRole)
-        buttons.addButton(button_compare, QDialogButtonBox.ActionRole)
+        buttons.addButton(button_compare, QDialogButtonBox.AcceptRole)
 
         buttons.accepted.connect(self.accept)
         buttons.rejected.connect(self.reject)
         button_randomize.clicked.connect(self.randomize)
+        button_compare.clicked.connect(self.compare)
 
         self.layout.addWidget(buttons, 1, 3)
 
     def manage_paramboxes(self):
-        self.sbox_list = {}
-        self.layouts = [QVBoxLayout(), QVBoxLayout(), QVBoxLayout()]
-        self.descr_layouts = QVBoxLayout(), QVBoxLayout(), QVBoxLayout()
         for i in range(3):
             try:
                 for name, param in self.all_params[i].iteritems():
@@ -82,19 +85,6 @@ class ParamsEditor(QDialog):
                     self.add_parambox(name, param, i)
             self.layout.addLayout(self.descr_layouts[i], 0, 2 * i)
             self.layout.addLayout(self.layouts[i], 0, 2 * i + 1)
-
-    # def update_layout(self, index):
-    #     self.layouts[index] = QVBoxLayout()
-    #     try:
-    #         for name, param in self.all_params[index].iteritems():
-    #             print(index, name, param)
-    #             self.add_parambox(name, param, index)
-    #     except AttributeError:
-    #         for j in range(len(self.names)):
-    #             name = self.names[j]
-    #             param = self.all_params[index][j]
-    #             print(j, name, self.all_params[index][j])
-    #             self.add_parambox(name, param, index)
 
     def add_parambox(self, name, param, layout_no):
         sbox = ParamBox(name, param)
@@ -115,6 +105,10 @@ class ParamsEditor(QDialog):
             p.update_one(name, sbox.get_value())
             #print(name, sbox.get_value())
         p.update()
-        print(result)
-        return (p, result == QDialog.Accepted)
+        print("self result: ", result)
+        return (p, result == QDialog.Accepted, self.comp)
 
+    def compare(self):
+        self.comp = 69
+        print(self.comp)
+        self.close()

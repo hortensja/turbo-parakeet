@@ -3,7 +3,7 @@ from i_model import IModel
 
 
 class Model(IModel):
-    default_params = {'mu': 1/3, 'alpha': lambda x: 0.439, 'sigma': 0, 'gamma': 1.5, 'delta': 0.13, 'rho': 0.13, 'phi': 0.15}
+    default_params = {'mu': 0.333, 'alpha': lambda x: 0.439, 'sigma': 0, 'gamma': 1.5, 'delta': 0.13, 'rho': 0.13, 'phi': 0.15}
 
     def __init__(self, params=default_params):
         self.params = params

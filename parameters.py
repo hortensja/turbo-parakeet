@@ -28,8 +28,6 @@ class Parameters():
             inits[self.inits_names[i]] = inits[i]
         dict_p_g = dict(self.params, **self.globals)
         dict_p_g.update(inits)
-        print('DICT_P_G:')
-        print(dict_p_g)
         return dict_p_g
 
     def deconcatenate(self):

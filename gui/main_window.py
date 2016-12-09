@@ -3,20 +3,18 @@
 from __future__ import unicode_literals
 import sys
 import os
-import random
 
 from PyQt4.QtGui import QGridLayout
 from PyQt4.QtGui import QPushButton
 from matplotlib.backends import qt_compat
 from PyQt4 import QtGui, QtCore
 
-from numpy import arange, sin, pi
 from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 
 from gui.params_display import ParamsDisplay
 from gui.params_editor import ParamsEditor
-from gui.plot_widget import StaticPlotCanvas, DynamicPlotCanvas
+from gui.plot_widget import StaticPlotCanvas
 from model_solver import ModelSolver
 
 
@@ -33,19 +31,18 @@ class ApplicationWindow(QtGui.QMainWindow):
 
         self.layout = QtGui.QGridLayout(self.main_widget)
 
+        self.plot_canvases = StaticPlotCanvas(self.main_widget), StaticPlotCanvas(self.main_widget)#, width=8, height=8, dpi=100)
+        #dc = DynamicPlotCanvas(self.main_widget)#, width=8, height=8, dpi=100)
 
 
-        self.left = StaticPlotCanvas(self.main_widget)#, width=8, height=8, dpi=100)
-        dc = DynamicPlotCanvas(self.main_widget)#, width=8, height=8, dpi=100)
+        self.model_solvers = [None, None] #ModelSolver('SABR')
+        self.params_displays = [QGridLayout(), QGridLayout()]
+        #self.plot_title = None
 
 
-        self.model_solver = None #ModelSolver('SABR')
-        self.params_display = QGridLayout()
-        self.plot_title = None
-
-
-        self.layout.addWidget(self.left, 0, 0, 2, 4)
-        self.layout.addWidget(dc, 0, 4, 2, 4)
+        self.layout.addWidget(self.plot_canvases[0], 0, 0, 2, 4)
+        self.layout.addWidget(self.plot_canvases[1], 0, 4, 2, 4)
+        #self.layout.addWidget(dc, 0, 4, 2, 4)
 
         button_edit = QPushButton("&Edytuj parametry")
         button_edit.clicked.connect(self.edit_parameters)
@@ -109,41 +106,44 @@ class ApplicationWindow(QtGui.QMainWindow):
         print("SBBH stochastic")
 
 
-    def run_deterministic(self, type):
-        self.model_solver = ModelSolver(modelType=type)
-        self.plot_title = 'deterministyczny model '
-        self.refresh_plot()
+    def run_deterministic(self, type, which=0):
+        for i in range(2):
+            self.model_solvers[i] = ModelSolver(model_type=type)
+        self.refresh_plot(which)
 
-    def refresh_param_display(self):
+    def refresh_param_display(self, which=0):
         try:
-            self.params_display.clear()
+            self.params_displays[which].clear()
         except AttributeError:
             pass
-        self.layout.removeItem(self.params_display)
-        self.params_display = ParamsDisplay(self.model_solver.get_params())
-        self.layout.addLayout(self.params_display, 4, 0, 2, 4)
+        self.layout.removeItem(self.params_displays[which])
+        self.params_displays[which] = ParamsDisplay(self.model_solvers[which].get_params())
+        self.layout.addLayout(self.params_displays[which], 4, 4*which, 2, 4)
 
-    def refresh_plot(self, name=None):
+    def refresh_plot(self, which=0, name=None):
         if name is None:
-            name = self.plot_title
-        x, y = self.model_solver.solve()
-        self.left.plot_model(x, y, self.model_solver.get_legend(),
-                             name + self.model_solver.get_title())
-        self.refresh_param_display()
+            name = "model "
+        x, y = self.model_solvers[which].solve()
+        self.plot_canvases[which].plot_model(x, y, self.model_solvers[which].get_legend(),
+                                      name + self.model_solvers[which].get_title())
+        self.refresh_param_display(which)
 
-    def edit_parameters(self):
-        if self.model_solver is None:
+    def edit_parameters(self, which=0):
+        if self.model_solvers[which] is None:
             msg = QtGui.QMessageBox()
             msg.setText("Najpierw wybierz model")
             msg.setWindowTitle("(!)")
             msg.exec_()
         else:
-            p_e = ParamsEditor(self.model_solver.get_params())
-            all_params, status = p_e.get_all_params()
+            p_e = ParamsEditor(self.model_solvers[which].get_params())
+            all_params, status, comp = p_e.get_all_params()
+            if comp == 69:
+                which = 1
             if status is True:
-                print(all_params)
-                self.model_solver.update_params(all_params)
-                self.refresh_plot()
+                self.model_solvers[which].update_params(all_params)
+                print(self.model_solvers[which].get_params())
+                self.refresh_plot(which)
+
 
 
 qApp = QtGui.QApplication(sys.argv)

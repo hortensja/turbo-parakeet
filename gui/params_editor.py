@@ -45,14 +45,17 @@ class ParamsEditor(QDialog):
             self.layout.setColumnStretch(2*i+1, 1)
 
     def manage_buttons(self):
-        buttons = QDialogButtonBox(
-            QDialogButtonBox.Ok,
-            Qt.Horizontal, self)
+        buttons = QDialogButtonBox(Qt.Horizontal, self)
 
         button_randomize = QPushButton("&Losuj")
         button_cancel = QPushButton("&Anuluj")
+        button_replace = QPushButton("&Zast\u0105p")
+        button_compare = QPushButton("&Por\u00F3wnaj")
         buttons.addButton(button_randomize, QDialogButtonBox.ActionRole)
         buttons.addButton(button_cancel, QDialogButtonBox.RejectRole)
+        buttons.addButton(button_replace, QDialogButtonBox.AcceptRole)
+        buttons.addButton(button_compare, QDialogButtonBox.ActionRole)
+
         buttons.accepted.connect(self.accept)
         buttons.rejected.connect(self.reject)
         button_randomize.clicked.connect(self.randomize)
@@ -67,7 +70,10 @@ class ParamsEditor(QDialog):
             try:
                 for name, param in self.all_params[i].iteritems():
                     print(i, name, param)
-                    self.add_parambox(name, param, i)
+                    try:
+                        self.add_parambox(name, param, i)
+                    except TypeError:
+                        pass
             except AttributeError:
                 for j in range(len(self.names)):
                     name = self.names[j]
@@ -109,5 +115,6 @@ class ParamsEditor(QDialog):
             p.update_one(name, sbox.get_value())
             #print(name, sbox.get_value())
         p.update()
+        print(result)
         return (p, result == QDialog.Accepted)
 

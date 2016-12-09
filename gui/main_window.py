@@ -5,6 +5,7 @@ import sys
 import os
 import random
 
+from PyQt4.QtGui import QGridLayout
 from PyQt4.QtGui import QPushButton
 from matplotlib.backends import qt_compat
 from PyQt4 import QtGui, QtCore
@@ -13,6 +14,7 @@ from numpy import arange, sin, pi
 from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 
+from gui.params_display import ParamsDisplay
 from gui.params_editor import ParamsEditor
 from gui.plot_widget import StaticPlotCanvas, DynamicPlotCanvas
 from model_solver import ModelSolver
@@ -29,23 +31,26 @@ class ApplicationWindow(QtGui.QMainWindow):
 
         self.main_widget = QtGui.QWidget(self)
 
-        layout = QtGui.QGridLayout(self.main_widget)
+        self.layout = QtGui.QGridLayout(self.main_widget)
 
 
-        button_edit = QPushButton("&Edytuj parametry")
-        button_edit.clicked.connect(self.edit_parameters)
-        layout.addWidget(button_edit, 3, 3, 1, 2)
 
         self.left = StaticPlotCanvas(self.main_widget)#, width=8, height=8, dpi=100)
         dc = DynamicPlotCanvas(self.main_widget)#, width=8, height=8, dpi=100)
 
 
         self.model_solver = None #ModelSolver('SABR')
+        self.params_display = QGridLayout()
         self.plot_title = None
 
 
-        layout.addWidget(self.left, 0, 0, 2, 4)
-        layout.addWidget(dc, 0, 4, 2, 4)
+        self.layout.addWidget(self.left, 0, 0, 2, 4)
+        self.layout.addWidget(dc, 0, 4, 2, 4)
+
+        button_edit = QPushButton("&Edytuj parametry")
+        button_edit.clicked.connect(self.edit_parameters)
+        self.layout.addWidget(button_edit, 3, 3, 1, 2)
+
 
         self.main_widget.setFocus()
         self.setCentralWidget(self.main_widget)
@@ -109,12 +114,22 @@ class ApplicationWindow(QtGui.QMainWindow):
         self.plot_title = 'deterministyczny model '
         self.refresh_plot()
 
+    def refresh_param_display(self):
+        try:
+            self.params_display.clear()
+        except AttributeError:
+            pass
+        self.layout.removeItem(self.params_display)
+        self.params_display = ParamsDisplay(self.model_solver.get_params())
+        self.layout.addLayout(self.params_display, 4, 0, 2, 4)
+
     def refresh_plot(self, name=None):
         if name is None:
             name = self.plot_title
         x, y = self.model_solver.solve()
         self.left.plot_model(x, y, self.model_solver.get_legend(),
                              name + self.model_solver.get_title())
+        self.refresh_param_display()
 
     def edit_parameters(self):
         if self.model_solver is None:

@@ -35,9 +35,6 @@ class ModelSolver:
     def set_model(self, model):
         self.model = model
 
-    #def randomize_init_conds(self):
-     #   print(self.init_conds)
-
     def solve(self):
         t = np.arange(0, self.tmax, self.delt)
         y = odeint(self.model.get_set_of_ode, self._init_conds, t)

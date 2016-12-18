@@ -10,7 +10,7 @@ from PyQt4.QtGui import QLabel
 from PyQt4.QtGui import QPushButton
 from PyQt4.QtGui import QVBoxLayout
 
-from gui.param_box import ParamBox
+from gui.param_box import ParamBox, ParamFunctionBox
 from parameters import Parameters
 
 
@@ -34,11 +34,6 @@ class ParamsEditor(QDialog):
 
         self.setVisible(True)
 
-    def randomize(self):
-#        self.all_params[0] = Parameters.randomize_params(self.all_params[0])
-#        self.update_paramboxes(self.all_params[0])
-#        self.show()
-        print('randomization')
 
 
     def manage_layout(self):
@@ -52,18 +47,15 @@ class ParamsEditor(QDialog):
     def manage_buttons(self):
         buttons = QDialogButtonBox(Qt.Horizontal, self)
 
-        button_randomize = QPushButton("&Losuj")
         button_cancel = QPushButton("&Anuluj")
         button_replace = QPushButton("&Zast\u0105p")
         button_compare = QPushButton("&Por\u00F3wnaj")
-        buttons.addButton(button_randomize, QDialogButtonBox.ActionRole)
         buttons.addButton(button_cancel, QDialogButtonBox.RejectRole)
         buttons.addButton(button_replace, QDialogButtonBox.AcceptRole)
         buttons.addButton(button_compare, QDialogButtonBox.AcceptRole)
 
         buttons.accepted.connect(self.accept)
         buttons.rejected.connect(self.reject)
-        button_randomize.clicked.connect(self.randomize)
         button_compare.clicked.connect(self.compare)
 
         self.layout.addWidget(buttons, 1, 3)
@@ -87,7 +79,10 @@ class ParamsEditor(QDialog):
             self.layout.addLayout(self.layouts[i], 0, 2 * i + 1)
 
     def add_parambox(self, name, param, layout_no):
-        sbox = ParamBox(name, param)
+        if isinstance(param, str):
+            sbox = ParamFunctionBox(name, param)
+        else:
+            sbox = ParamBox(name, param)
         self.sbox_list[name] = sbox
         self.layouts[layout_no].addWidget(sbox)
         self.descr_layouts[layout_no].addWidget(QLabel(name))
@@ -96,14 +91,11 @@ class ParamsEditor(QDialog):
         for name, p in p_dict:
             self.sbox_list[name].update(p)
 
-
     def get_all_params(self, parent=None):
         p = Parameters(self.names, *self.all_params)
-        #print(p)
         result = self.exec_()
         for name, sbox in self.sbox_list.iteritems():
             p.update_one(name, sbox.get_value())
-            #print(name, sbox.get_value())
         p.update()
         print("self result: ", result)
         return (p, result == QDialog.Accepted, self.comp)

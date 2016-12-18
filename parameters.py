@@ -24,8 +24,8 @@ class Parameters():
 
     def concatenate(self):
         inits = {}
-        for i in range(len(inits)):
-            inits[self.inits_names[i]] = inits[i]
+        for i in range(len(self.inits)):
+            inits[self.inits_names[i]] = self.inits[i]
         dict_p_g = dict(self.params, **self.globals)
         dict_p_g.update(inits)
         return dict_p_g

@@ -3,7 +3,7 @@ from i_model import IModel
 
 
 class Model(IModel):
-    default_params = {'mu': 0.333, 'alpha': lambda x: 0.439, 'sigma': 0, 'gamma': 1.5, 'delta': 0.13, 'rho': 0.13, 'phi': 0.15}
+    default_params = {'mu': 0.333, 'alpha': 'lambda x: 0.439', 'sigma': 0, 'gamma': 1.5, 'delta': 0.13, 'rho': 0.13, 'phi': 0.15}
 
     def __init__(self, params=default_params):
         self.params = params
@@ -13,11 +13,13 @@ class Model(IModel):
     def get_set_of_ode(self, y, t):
         p = self.params
 
+        alpha = eval(p['alpha'])
+
         def dsdt(y, t):
-            return (p['mu'] - (p['alpha'](p['sigma']))*y[0]*(y[1]+y[2]) - p['mu']*y[0])
+            return (p['mu'] - (alpha(p['sigma']))*y[0]*(y[1]+y[2]) - p['mu']*y[0])
 
         def db1dt(y, t):
-            return ((p['alpha'](p['sigma']))*y[0]*(y[1]+y[2]) - (p['gamma']+p['mu'])*y[1])
+            return (alpha(p['sigma'])*y[0]*(y[1]+y[2]) - (p['gamma']+p['mu'])*y[1])
 
         def db2dt(y, t):
             return (p['gamma']*y[1] - (p['mu']+p['rho']) * y[2] - p['sigma'] * y[2] * y[3] + p['phi']*y[3])

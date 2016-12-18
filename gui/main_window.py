@@ -2,15 +2,10 @@
 
 from __future__ import unicode_literals
 import sys
-import os
 
 from PyQt4.QtGui import QGridLayout
 from PyQt4.QtGui import QPushButton
-from matplotlib.backends import qt_compat
 from PyQt4 import QtGui, QtCore
-
-from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
-from matplotlib.figure import Figure
 
 from gui.params_display import ParamsDisplay
 from gui.params_editor import ParamsEditor
@@ -31,28 +26,20 @@ class ApplicationWindow(QtGui.QMainWindow):
 
         self.layout = QtGui.QGridLayout(self.main_widget)
 
-        self.plot_canvases = StaticPlotCanvas(self.main_widget), StaticPlotCanvas(self.main_widget)#, width=8, height=8, dpi=100)
-        #dc = DynamicPlotCanvas(self.main_widget)#, width=8, height=8, dpi=100)
+        self.plot_canvases = StaticPlotCanvas(self.main_widget), StaticPlotCanvas(self.main_widget)
 
-
-        self.model_solvers = [None, None] #ModelSolver('SABR')
+        self.model_solvers = [None, None]
         self.params_displays = [QGridLayout(), QGridLayout()]
-        #self.plot_title = None
-
 
         self.layout.addWidget(self.plot_canvases[0], 0, 0, 2, 4)
         self.layout.addWidget(self.plot_canvases[1], 0, 4, 2, 4)
-        #self.layout.addWidget(dc, 0, 4, 2, 4)
 
         button_edit = QPushButton("&Edytuj parametry")
         button_edit.clicked.connect(self.edit_parameters)
         self.layout.addWidget(button_edit, 3, 3, 1, 2)
 
-
         self.main_widget.setFocus()
         self.setCentralWidget(self.main_widget)
-
-        #self.statusBar().showMessage("Joanna Cichowska", 2016)
 
     def about(self):
         QtGui.QMessageBox.about(self, "O programie",
@@ -66,13 +53,8 @@ class ApplicationWindow(QtGui.QMainWindow):
                                  QtCore.Qt.CTRL + QtCore.Qt.Key_Q)
 
         self.model_menu = QtGui.QMenu('&Model', self)
-        self.sabr_menu = self.model_menu.addMenu('&SABR')
-        self.sabr_menu.addAction('&Deterministyczny', self.run_sabr_deterministic)
-        self.sabr_menu.addAction('&Stochastyczny', self.run_sabr_stochastic)
-
-        self.sbbh_menu = self.model_menu.addMenu('&SB\u2081B\u2082H')
-        self.sbbh_menu.addAction('&Deterministyczny', self.run_sbbh_deterministic)
-        self.sbbh_menu.addAction('&Stochastyczny', self.run_sbbh_stochastic)
+        self.model_menu.addAction('&SABR', self.run_sabr_deterministic)
+        self.model_menu.addAction('&SB\u2081B\u2082H', self.run_sbbh_deterministic)
 
         self.help_menu = QtGui.QMenu('&Pomoc', self)
         self.help_menu.addAction('&O programie', self.about)
@@ -93,18 +75,9 @@ class ApplicationWindow(QtGui.QMainWindow):
         self.run_deterministic(type='SABR')
         print("SABR deterministic")
 
-    def run_sabr_stochastic(self):
-        print("SABR stochastic")
-
-
-
     def run_sbbh_deterministic(self):
         self.run_deterministic(type='SBBH')
         print("SBBH deterministic")
-
-    def run_sbbh_stochastic(self):
-        print("SBBH stochastic")
-
 
     def run_deterministic(self, type, which=0):
         for i in range(2):
@@ -143,7 +116,6 @@ class ApplicationWindow(QtGui.QMainWindow):
                 self.model_solvers[which].update_params(all_params)
                 print(self.model_solvers[which].get_params())
                 self.refresh_plot(which)
-
 
 
 qApp = QtGui.QApplication(sys.argv)

@@ -1,4 +1,6 @@
 from PyQt4.QtGui import QDoubleSpinBox
+from PyQt4.QtGui import QLineEdit
+from PyQt4.QtGui import QTextEdit
 
 
 class ParamBox(QDoubleSpinBox):
@@ -11,7 +13,6 @@ class ParamBox(QDoubleSpinBox):
         self.setValue(value)
         self.name = name
 
-
     def get_value(self):
         return self.value()
 
@@ -19,4 +20,23 @@ class ParamBox(QDoubleSpinBox):
         return self.name
 
     def update(self, value):
+        self.setValue(value)
+
+
+class ParamFunctionBox(QLineEdit):
+
+    def __init__(self, name, value=1.0, parent=None):
+        super(ParamFunctionBox, self).__init__(parent)
         self.value = value
+        self.setText(str(value))
+        self.name = name
+
+    def get_value(self):
+        return str(self.text())
+
+    def get_name(self):
+        return self.name
+
+    def update(self, value):
+        self.value = value
+        self.setText(value)

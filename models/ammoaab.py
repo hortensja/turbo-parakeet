@@ -1,5 +1,5 @@
+from __future__ import division
 from i_model import IModel
-
 
 class Model(IModel):
     default_params = {'beta1': 0.4, 'beta2': 0.3, 'm1': 0, 'm2': 0, 'alpha': 0.05, 'gamma1': 0.05, 'gamma2': 0.2,
@@ -34,3 +34,11 @@ class Model(IModel):
 
     def get_title(self):
         return 'SABR'
+
+    def get_Rs(self):
+        p = self.params
+
+        r1 = (p['beta1'])/(p['mu']+p['alpha']+p['gamma1'])
+        r2 = (p['beta2'])/(p['mu']+p['gamma2'])
+
+        return {'R1': r1, 'R2': r2}

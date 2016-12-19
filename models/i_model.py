@@ -29,3 +29,7 @@ class IModel:
     @abstractmethod
     def get_title(self):
         pass
+
+    @abstractmethod
+    def get_Rs(self):
+        pass

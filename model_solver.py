@@ -14,7 +14,7 @@ class ModelSolver:
     def __init__(self, model_type):
         self.model = model_dict[model_type]()
         self.delt = 0.01
-        self.tmax = 10.0
+        self.tmax = 50.0
         self._init_conds = ric()
 
     @property
@@ -30,7 +30,6 @@ class ModelSolver:
 
     def set_tmax(self, tmax):
         self.tmax = tmax
-
 
     def set_model(self, model):
         self.model = model
@@ -56,4 +55,7 @@ class ModelSolver:
 
     def get_params(self):
         globals = {'delt': self.delt, 'tmax': self.tmax}
-        return Parameters(self.model.get_legend(), self.model.get_params(), globals, self._init_conds)
+        return Parameters(self.model.get_legend(), self.model.get_params(), globals, self._init_conds, self.get_Rs())
+
+    def get_Rs(self):
+        return self.model.get_Rs()

@@ -1,4 +1,7 @@
 from __future__ import division
+
+from math import sqrt
+
 from i_model import IModel
 
 
@@ -34,3 +37,14 @@ class Model(IModel):
 
     def get_title(self):
         return "SB1B2H"
+
+    def get_Rs(self):
+        p = self.params
+        alpha = eval(p['alpha'])
+
+        rs1 = (alpha(p['sigma']))/(p['mu']+p['gamma'])
+        rs2 = (p['phi']*p['rho'])/((p['mu']+p['phi'])*(p['mu']+p['rho']))
+        r12 = (p['gamma'])/(p['mu']+p['rho'])
+        sq = sqrt(rs1*r12)
+
+        return {'R(S,B1)': rs1, 'R(S,B2)': rs2, 'R(B1,B2)': r12, 'sqrt': sq}

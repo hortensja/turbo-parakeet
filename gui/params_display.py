@@ -18,6 +18,7 @@ class ParamsDisplay(QtGui.QGridLayout):
         self.params = parameters.get_params()
         self.inits = parameters.get_inits()
         self.init_names = parameters.get_inits_names()
+        self.Rs = parameters.get_Rs()
 
         for i in range(2):
             self.addLayout(self.names[i], 0, 2 * i)
@@ -26,6 +27,10 @@ class ParamsDisplay(QtGui.QGridLayout):
         for n, p in self.params.iteritems():
             self.names[0].addWidget(QLabel(n))
             self.values[0].addWidget(QLabel(str(p)))
+
+        for n, r in self.Rs.iteritems():
+            self.names[0].addWidget(QLabel(n))
+            self.values[0].addWidget(QLabel(str(r)))
 
         for j in range(len(self.init_names)):
             n = self.init_names[j]

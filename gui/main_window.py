@@ -114,7 +114,7 @@ class ApplicationWindow(QtGui.QMainWindow):
                 which = 1
             if status is True:
                 self.model_solvers[which].update_params(all_params)
-                print(self.model_solvers[which].get_params())
+                #print(self.model_solvers[which].get_params())
                 self.refresh_plot(which)
 
 

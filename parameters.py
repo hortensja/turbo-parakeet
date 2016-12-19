@@ -1,13 +1,16 @@
 import random
 
+from math_util import round_params
+
 
 class Parameters():
 
-    def __init__(self, inits_names, params, globals, inits):
+    def __init__(self, inits_names, params, globals, inits, Rs = None):
         self.params = params
         self.globals = globals
         self.inits = inits
         self.inits_names = inits_names
+        self.Rs = Rs
         self.all_dict = self.concatenate()
 
     def get_params(self):
@@ -21,6 +24,9 @@ class Parameters():
 
     def get_inits_names(self):
         return self.inits_names
+
+    def get_Rs(self):
+        return round_params(self.Rs)
 
     def concatenate(self):
         inits = {}

@@ -3,7 +3,12 @@
 from __future__ import unicode_literals
 import sys
 
+from PyQt4.QtCore import QFile
+from PyQt4.QtCore import QIODevice
+from PyQt4.QtGui import QFileDialog
 from PyQt4.QtGui import QGridLayout
+from PyQt4.QtGui import QMessageBox
+from PyQt4.QtGui import QPixmap
 from PyQt4.QtGui import QPushButton
 from PyQt4 import QtGui, QtCore
 
@@ -42,13 +47,15 @@ class ApplicationWindow(QtGui.QMainWindow):
         self.setCentralWidget(self.main_widget)
 
     def about(self):
-        QtGui.QMessageBox.about(self, "O programie",
+        QMessageBox.about(self, "O programie",
                                 """Praca in\u017cynierska
                                 Joanna Cichowska 2016"""
                                 )
 
     def init_menu(self):
         self.file_menu = QtGui.QMenu('&Plik', self)
+        self.file_menu.addAction('&Zapisz lewy wykres', self.save_plot, QtCore.Qt.CTRL + QtCore.Qt.Key_S)
+        self.file_menu.addAction('&Zapisz prawy wykres', lambda: self.save_plot(which=1), QtCore.Qt.CTRL + QtCore.Qt.SHIFT + QtCore.Qt.Key_S)
         self.file_menu.addAction('&Wyjście', self.file_quit,
                                  QtCore.Qt.CTRL + QtCore.Qt.Key_Q)
 
@@ -70,6 +77,16 @@ class ApplicationWindow(QtGui.QMainWindow):
 
     def closeEvent(self, ce):
         self.file_quit()
+
+    def save_plot(self, which=0):
+        file_name = QFileDialog.getSaveFileName(None, 'Zapisz wykres jako...', "../saved_plots", '.PNG File (*.png);;All Files (*)")')
+        if len(file_name) == 0:
+            return
+        plot_file = QFile(file_name)
+        if not plot_file.open(QIODevice.WriteOnly):
+            QMessageBox.about(self, "Nie uda\u0142o si\u0119 otworzy\u0107 pliku", plot_file.errorString())
+            return
+        self.plot_canvases[which].save_plot_canvas(plot_file)
 
     def run_sabr_deterministic(self):
         self.run_deterministic(type='SABR')

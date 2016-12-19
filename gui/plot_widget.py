@@ -1,16 +1,10 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import unicode_literals
-import sys
-import os
-import random
-from matplotlib.backends import qt_compat
 from PyQt4 import QtGui, QtCore
 
-from numpy import arange, sin, cos, pi
 from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
-from matplotlib import legend as legend
 
 
 class PlotCanvas(FigureCanvas):
@@ -28,6 +22,9 @@ class PlotCanvas(FigureCanvas):
                                    QtGui.QSizePolicy.Expanding,
                                    QtGui.QSizePolicy.Expanding)
         FigureCanvas.updateGeometry(self)
+
+    def save_plot_canvas(self, filename):
+        self.figure.savefig(filename)
 
 
 class StaticPlotCanvas(PlotCanvas):

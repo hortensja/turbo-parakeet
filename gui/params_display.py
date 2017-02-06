@@ -1,8 +1,8 @@
+from __future__ import division
 from PyQt4 import QtGui
 
 from PyQt4.QtGui import QLabel
 from PyQt4.QtGui import QVBoxLayout
-
 
 class ParamsDisplay(QtGui.QGridLayout):
 
@@ -28,15 +28,16 @@ class ParamsDisplay(QtGui.QGridLayout):
             self.names[0].addWidget(QLabel(n))
             self.values[0].addWidget(QLabel(str(p)))
 
-        for n, r in self.Rs.iteritems():
-            self.names[0].addWidget(QLabel(n))
-            self.values[0].addWidget(QLabel(str(r)))
 
         for j in range(len(self.init_names)):
             n = self.init_names[j]
             p = self.inits[j]
             self.names[1].addWidget(QLabel(n))
             self.values[1].addWidget(QLabel(str(p)))
+
+        for n, r in self.Rs.iteritems():
+            self.names[1].addWidget(QLabel(n))
+            self.values[1].addWidget(QLabel(str(r)))
 
     def clear(self):
         for i in range(2):

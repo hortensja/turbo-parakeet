@@ -1,7 +1,7 @@
+from __future__ import division
 import random
 
 from math_util import round_params
-
 
 class Parameters():
 

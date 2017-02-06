@@ -1,14 +1,13 @@
+from __future__ import division
 from PyQt4.QtGui import QDoubleSpinBox
 from PyQt4.QtGui import QLineEdit
-from PyQt4.QtGui import QTextEdit
-
 
 class ParamBox(QDoubleSpinBox):
 
     def __init__(self, name, value=0.0, parent=None):
         super(ParamBox, self).__init__(parent)
         self.setSingleStep(0.1)
-        self.setMaximum(50.0)
+        self.setMaximum(200.0)
         self.setDecimals(3)
         self.setValue(value)
         self.name = name

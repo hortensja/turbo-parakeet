@@ -3,7 +3,12 @@ import numpy.random as nprand
 
 def normalize_initial_conditions(conds):
     s = sum(conds)
-    return [round(c/s, 3) for c in conds]
+    if s <= 0:
+        return [0.25 for c in conds]
+    ret = [round(c/s, 3) for c in conds]
+    ret[-1] = 1-sum(ret[0:3])
+    print(ret)
+    return ret
 
 def randomize_initial_conditions(length = 4, span = (0, 10)):
     conds = nprand.randint(span[0], span[1], length)
@@ -13,5 +18,8 @@ def randomize_initial_conditions(length = 4, span = (0, 10)):
 def round_params(p_dict, prec=5):
     ret = {}
     for n, p in p_dict.iteritems():
-        ret[n] = round(p, prec)
+        try:
+            ret[n] = round(p, prec)
+        except TypeError:
+            ret[n] = p
     return ret

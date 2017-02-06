@@ -1,3 +1,4 @@
+from __future__ import division
 from abc import ABCMeta, abstractmethod
 
 class IModel:
@@ -17,6 +18,17 @@ class IModel:
 
     def get_params(self):
         return self.params
+
+    def prepare_output(self, x):
+        ret = "("
+        ret += str(round(1-sum(x), 3))
+        for xx in x:
+            if xx < 0:
+                return '-'
+            ret += ", "
+            ret += str(round(xx, 3))
+        ret += ")"
+        return ret
 
     @abstractmethod
     def get_set_of_ode(self, y, t):

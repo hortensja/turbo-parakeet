@@ -45,6 +45,7 @@ class Model(IModel):
         rs1 = (alpha(p['sigma']))/(p['mu']+p['gamma'])
         rs2 = (p['phi']*p['rho'])/((p['mu']+p['phi'])*(p['mu']+p['rho']))
         r12 = (p['gamma'])/(p['mu']+p['rho'])
-        sq = sqrt(rs1*r12)
+        sq = rs1 + sqrt(rs1*r12)
+        b2max =(p['mu']+p['phi'])/p['rho']
 
-        return {'R(S,B1)': rs1, 'R(S,B2)': rs2, 'R(B1,B2)': r12, 'sqrt': sq}
+        return {'R(S,B1)': rs1, 'R(S,B2)': rs2, 'R(B1,B2)': r12, 'sqrt': sq, 'b2max': b2max}

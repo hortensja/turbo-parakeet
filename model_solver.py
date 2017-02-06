@@ -1,3 +1,4 @@
+from __future__ import division
 import numpy as np
 from scipy.integrate import odeint
 
@@ -14,7 +15,7 @@ class ModelSolver:
     def __init__(self, model_type):
         self.model = model_dict[model_type]()
         self.delt = 0.01
-        self.tmax = 50.0
+        self.tmax = 150.0
         self._init_conds = ric()
 
     @property
@@ -37,6 +38,10 @@ class ModelSolver:
     def solve(self):
         t = np.arange(0, self.tmax, self.delt)
         y = odeint(self.model.get_set_of_ode, self._init_conds, t)
+        ys = []
+        for yy in y:
+            ys.append(sum(yy))
+        print (ys)
         x = np.linspace(0.0, self.tmax, len(y))
         return (x, y)
 

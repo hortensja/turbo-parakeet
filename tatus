@@ -1,0 +1,96 @@
+[33mcommit 577cc6656e5dcd7939aa235edc3933441c758e97[m
+Author: hortensja <hortensja.p@gmail.com>
+Date:   Mon Dec 19 19:06:50 2016 +0100
+
+    saving plots added
+
+[33mcommit 7a49bf363983ad36c2859b27658a9ebc24f2761e[m
+Author: hortensja <hortensja.p@gmail.com>
+Date:   Mon Dec 19 16:44:13 2016 +0100
+
+    actually forgot calculating Rs, fixed
+
+[33mcommit 3b66babbc560fda76a9098abdf8e54da72cc6f6b[m
+Author: hortensja <hortensja.p@gmail.com>
+Date:   Sun Dec 18 22:52:01 2016 +0100
+
+    final version for the paper, to be continued later
+
+[33mcommit b06bc68ab128aacede16f8051b175a14b590f0b0[m
+Author: hortensja <hortensja.p@gmail.com>
+Date:   Fri Dec 9 23:28:44 2016 +0100
+
+    first fully functioning version
+
+[33mcommit fcc0322098182b514128976c07ab4533674ea47e[m
+Author: hortensja <hortensja.p@gmail.com>
+Date:   Fri Dec 9 20:33:54 2016 +0100
+
+    more parameters display, TODO: compare/exchange
+
+[33mcommit a5488a72a334f2b1ae4bffa87bf7754911516a47[m
+Author: hortensja <hortensja.p@gmail.com>
+Date:   Sun Dec 4 22:37:00 2016 +0100
+
+    minor code improvements
+
+[33mcommit 028f8f0bcdd80cb6abeed9f24a48798fd4f5412a[m
+Author: hortensja <hortensja.p@gmail.com>
+Date:   Sun Dec 4 15:53:14 2016 +0100
+
+    updating done
+
+[33mcommit fb2b6a15a68b2d46ebd1cabb3ef9d83b185a3494[m
+Author: hortensja <hortensja.p@gmail.com>
+Date:   Sat Dec 3 22:27:23 2016 +0100
+
+    updating parameters, TODO: testing, refreshing plot, randomizing
+
+[33mcommit bf998fab284d181e339190fbac2f05aa8758e36e[m
+Author: hortensja <hortensja.p@gmail.com>
+Date:   Sat Dec 3 00:58:33 2016 +0100
+
+    params editor added
+
+[33mcommit 45f28c69e46ef621e86074431ccba16f3330c093[m
+Merge: b632b0a 48cd47d
+Author: hortensja <hortensja.p@gmail.com>
+Date:   Fri Dec 2 13:37:30 2016 +0100
+
+    model solver integrated with gui
+
+[33mcommit b632b0a6a866319f22c2ae37401fd416a6caf229[m
+Author: hortensja <hortensja.p@gmail.com>
+Date:   Thu Dec 1 19:52:50 2016 +0100
+
+    jakies xmle
+
+[33mcommit 48cd47d91ddcec581e8952a176f6b93bab73ffb4[m
+Author: hortensja <hortensja.p@gmail.com>
+Date:   Wed Nov 30 12:41:41 2016 +0100
+
+    Update README.md
+
+[33mcommit 7ce09565b0d374853c5ef34bd3eca2ca682d5afe[m
+Author: hortensja <hortensja.p@gmail.com>
+Date:   Wed Nov 30 12:41:11 2016 +0100
+
+    Update README.md
+
+[33mcommit becc44378ab3400833548b58c592d1028a9323a0[m
+Author: hortensja <hortensja.p@gmail.com>
+Date:   Wed Nov 30 12:36:29 2016 +0100
+
+    gui prototype
+
+[33mcommit 51975f125187c3b15916dd62c5b7f571310b085d[m
+Author: hortensja <hortensja.p@gmail.com>
+Date:   Tue Nov 29 18:25:36 2016 +0100
+
+    first*
+
+[33mcommit f6a5a34776fbe3886ad1461921eef6e4e62ed77f[m
+Author: hortensja <hortensja.p@gmail.com>
+Date:   Tue Nov 29 18:24:45 2016 +0100
+
+    first
